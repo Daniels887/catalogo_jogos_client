@@ -1,8 +1,11 @@
+import Base from './components/Base';
+import Routes from './routes';
+
 function App() {
   return (
-    <div className="App">
-      
-    </div>
+    <Base>
+      <Routes />
+    </Base>
   );
 }
 
