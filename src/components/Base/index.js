@@ -1,7 +1,22 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Drawer, AppBar, Toolbar, List, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
+import { Drawer, 
+  AppBar,
+  Toolbar,
+  List,
+  CssBaseline, 
+  Typography, 
+  Divider, 
+  IconButton, 
+  ListItem, 
+  ListItemText, 
+  ListItemIcon, 
+  Box, 
+  useMediaQuery,
+  BottomNavigation,
+  BottomNavigationAction
+} from '@material-ui/core';
 import { Menu, ChevronLeft, ChevronRight, Home, Create } from '@material-ui/icons'
 import { withRouter } from 'react-router-dom';
 
@@ -66,14 +81,19 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    height: 'calc(100vh - 64px)'
+    height: 'calc(100vh - 64px)',
   },
+  contentMobile: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  }
 }));
 
 function MiniDrawer({ children, history }) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const matches = useMediaQuery(theme.breakpoints.up('md'))
 
   const icons = [
     {
@@ -97,64 +117,88 @@ function MiniDrawer({ children, history }) {
   };
 
   return (
-    <div className={classes.root}>
+    <>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton, {
-              [classes.hide]: open,
-            })}
-          >
-            <Menu />
-          </IconButton>
-          <Typography variant="h6" noWrap>
-            Catálogo de Jogos
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+      { matches ? (
+        <div className={classes.root}>
+          <AppBar
+          position="fixed"
+          className={clsx(classes.appBar, {
+            [classes.appBarShift]: open,
+          })}
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
+            >
+              <Menu />
+            </IconButton>
+            <Typography variant="h6" noWrap>
+              Catálogo de Jogos
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
-          </IconButton>
+          })}
+          classes={{
+            paper: clsx({
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            }),
+          }}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRight /> : <ChevronLeft />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {icons.map((icon, index) => (
+              <ListItem button key={index} style={{ paddingLeft: 24, height: '64px'}} onClick={() => history.push(icon.navigate)}>
+                <ListItemIcon>{icon.icon}</ListItemIcon>
+                <ListItemText primary={icon.text} />
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {children}
+        </main>
         </div>
-        <Divider />
-        <List>
-          {icons.map((icon, index) => (
-            <ListItem button key={index} style={{ paddingLeft: 24, height: '64px'}} onClick={() => history.push(icon.navigate)}>
-              <ListItemIcon>{icon.icon}</ListItemIcon>
-              <ListItemText primary={icon.text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.toolbar} />
-        {children}
-      </main>
-    </div>
+      ) : (
+        <>
+          <AppBar position="static">
+            <Toolbar>
+              <Box width={1} display="flex" justifyContent="center">
+                <Typography variant="h6">
+                  Catálogo de Jogos
+                </Typography>
+              </Box>
+            </Toolbar>
+          </AppBar>
+          <main className={classes.contentMobile}>
+            {children}
+          </main>
+          <BottomNavigation style={{ width: '100%', position: 'fixed', bottom: 0}}>
+            {icons.map(icon => (
+              <BottomNavigationAction key={icon.text} label={icon.text} value="recents" icon={icon.icon} onClick={() => history.push(icon.navigate)}/>
+            ))}
+          </BottomNavigation>
+        </>
+      )}
+    </>
   );
 }
 

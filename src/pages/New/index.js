@@ -1,6 +1,6 @@
 import api from '../../services/api';
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { Box, TextField, Paper, Typography, Button } from '@material-ui/core'
+import { Box, TextField, Paper, Typography, Button, useTheme, useMediaQuery } from '@material-ui/core'
 import { CameraAlt } from '@material-ui/icons'
 import { useHistory } from 'react-router-dom';
 
@@ -13,9 +13,11 @@ const New = () => {
     file: ''
   })
   const [drop, setDrop] = useState(false);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up('md'))
 
   const handleChange = (name, event) => {
-    setForm({ ...form, [name]: event.target.value })
+    setForm({ ...form, [name]: name == 'file' ? event.target.files[0] : event.target.value })
   }
 
   useEffect(() => {
@@ -68,16 +70,16 @@ const New = () => {
     data.append('Nome', form.name);
     data.append('Categoria', form.category)
 
-    const response = await api.post('/Jogo', data)
+    await api.post('/Jogo', data)
 
     history.push('/')
   }
 
   return (
-    <Box css={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+    <Box css={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <form onSubmit={handleSubmit}>
         <Paper>
-          <Box p={3} css={{ display: 'flex', flexDirection: 'column', width: '450px' }}>
+          <Box p={3} css={{ display: 'flex', flexDirection: 'column', width: matches ? '450px' : '350px' }}>
             <Typography variant="h5" style={{ textAlign: 'center' }}>Cadastro de Jogo</Typography>
             <TextField id="standard-basic" label="Nome do Jogo" value={form.name} onChange={(event) => handleChange('name', event)} style={{ marginTop: '16px'}} />
             <TextField
@@ -89,7 +91,7 @@ const New = () => {
               style={{ marginTop: '16px' }}
             >
               {categories.map((category) => (
-                <option key={category.value} value={category.name}>
+                <option key={category.value} value={category.name} style={{ cursor: 'pointer' }}>
                   {category.name}
                 </option>
               ))}
@@ -123,7 +125,7 @@ const New = () => {
               type="file" 
               id="photo"
               style={{ display: 'none'}}
-              onChange={event => handleChange('file', event.target.files[0])} 
+              onChange={event => handleChange('file', event)} 
               ref={inputPhoto} 
               accept="image/*"
             />
