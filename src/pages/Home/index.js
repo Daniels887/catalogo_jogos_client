@@ -31,7 +31,7 @@ const Home = () => {
   return (
     <Box mb={5}>
       <Box justifyContent="center" display="flex" mb={5}>
-        <TextField label="Filtrar Games" style={{ width: '350px' }} value={filter} onChange={(e) => setFilter(e.target.value)} />
+        <TextField label="Pesquisar" style={{ width: '350px' }} value={filter} onChange={(e) => setFilter(e.target.value)} />
       </Box>
       { categories.map(category => (
         <Box key={category.value}>
