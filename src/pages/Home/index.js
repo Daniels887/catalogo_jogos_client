@@ -35,12 +35,12 @@ const Home = () => {
       </Box>
       { categories.map(category => (
         <Box key={category.value}>
-          <Typography variant="h4">{games.filter(game => game.categoria === category.name).filter(game => game.nome.includes(filter)).length ? category.name : ''}</Typography>
+          <Typography variant="h4" color="primary">{games.filter(game => game.categoria === category.name).filter(game => game.nome.includes(filter)).length ? category.name : ''}</Typography>
           <Box display="flex" alignItems="center" mt={2} mb={2} flexDirection={{ xs: 'column', md: 'row' }}>
             { games.length && games.filter(game => game.categoria === category.name).filter(game => game.nome.includes(filter)).map(game => (
               <Paper key={game.id} style={{ marginRight: matches ? '32px' : 0, width: '350px', height: '350px', }}>
-                <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
-                  <Typography variant="h4">{game.nome}</Typography>
+                <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" mt={2}>
+                  <Typography variant="h5" color="primary">{game.nome}</Typography>
                   <img src={`http://localhost:5000/api/Jogo/ObterCapa/${game.id}`} style={{ width: '250px', height: '150px', marginTop: '16px', marginBottom: '16px' }}/>
                   <Button variant="contained" color="primary" style={{ width: '250px'}} onClick={() => history.push(`/edit/${game.id}`)}>Editar</Button>
                   <Button variant="contained" color="secondary" style={{ width: '250px', marginTop: '16px' }} onClick={() => deleteGame(game.id)}>Excluir</Button>
