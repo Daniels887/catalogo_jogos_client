@@ -1,6 +1,6 @@
 import api from '../../services/api';
 import { useEffect, useState, useRef, useMemo } from 'react';
-import { Box, TextField, Paper, Typography, Button, useTheme, useMediaQuery } from '@material-ui/core'
+import { Box, TextField, Paper, Typography, Button, useTheme, useMediaQuery, Select, MenuItem, InputLabel, FormControl } from '@material-ui/core'
 import { CameraAlt } from '@material-ui/icons'
 import { useHistory } from 'react-router-dom';
 
@@ -82,20 +82,18 @@ const New = () => {
           <Box p={3} css={{ display: 'flex', flexDirection: 'column', width: matches ? '450px' : '350px' }}>
             <Typography variant="h5" style={{ textAlign: 'center' }}>Cadastro de Jogo</Typography>
             <TextField id="standard-basic" label="Nome do Jogo" value={form.name} onChange={(event) => handleChange('name', event)} style={{ marginTop: '16px'}} />
-            <TextField
-              id="standard-select-currency"
-              select
-              label="Categoria"
-              value={form.category}
-              onChange={(event) => handleChange('category', event)}
-              style={{ marginTop: '16px' }}
-            >
-              {categories.map((category) => (
-                <option key={category.value} value={category.name} style={{ cursor: 'pointer' }}>
-                  {category.name}
-                </option>
+            <FormControl style={{ marginTop: '16px' }}>
+              <InputLabel id="categoria">Categoria</InputLabel>
+              <Select
+                labelId="categoria"
+                value={form.category}
+                onChange={(event) => handleChange('category', event)}
+              >
+                { categories.map((category) => (
+                <MenuItem kley={category.valeu} value={category.name}>{category.name}</MenuItem>
               ))}
-            </TextField>
+              </Select>
+            </FormControl>
             <label 
             htmlFor="photo" 
             ref={labelPhoto}

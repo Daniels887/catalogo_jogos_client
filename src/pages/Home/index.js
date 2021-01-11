@@ -30,14 +30,17 @@ const Home = () => {
 
   return (
     <Box mb={5}>
-      <Box justifyContent="center" display="flex" mb={5}>
+      <Box justifyContent="center" display="flex" mb={3}>
         <TextField label="Pesquisar" style={{ width: '350px' }} value={filter} onChange={(e) => setFilter(e.target.value)} />
       </Box>
       { categories.map(category => (
         <Box key={category.value}>
-          <Typography variant="h4" color="primary">{games.filter(game => game.categoria === category.name).filter(game => game.nome.includes(filter)).length ? category.name : ''}</Typography>
+          <Typography variant="h4" style={{ textAlign: matches ? 'left' : 'center' }} color="primary">{games.filter(game => game.categoria === category.name)
+          .filter(game => game.nome.toLowerCase().includes(filter.toLowerCase())).length ? category.name : ''}</Typography>
           <Box display="flex" alignItems="center" mt={2} mb={2} flexDirection={{ xs: 'column', md: 'row' }}>
-            { games.length && games.filter(game => game.categoria === category.name).filter(game => game.nome.includes(filter)).map(game => (
+            { games.length && games.filter(game => game.categoria === category.name)
+            .filter(game => game.nome.toLowerCase().includes(filter.toLowerCase()))
+            .map(game => (
               <Paper key={game.id} style={{ marginRight: matches ? '32px' : 0, width: '350px', height: '350px', }}>
                 <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column" mt={2}>
                   <Typography variant="h5" color="primary">{game.nome}</Typography>
