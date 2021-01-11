@@ -36,7 +36,6 @@ const Edit = () => {
 
       const image = new File([imageResponse.data], `${params.id}.png`)
 
-      console.log(image)
       setForm({
         name: response.data.nome,
         category: response.data.categoria,
